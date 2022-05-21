@@ -1,10 +1,14 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { removeContactAction } from '../../redus/actions';
 import PropTypes from 'prop-types';
 import styles from './ContactList.module.css';
 
-function ContactList({ contacts, filter, removeContact }) {
+export default function ContactList() {
+  const contacts = useSelector(state => state.contacts.items);
+  const filter = useSelector(state => state.contacts.filter);
+  const dispath = useDispatch();
+
   return (
     <ul className={styles.contactList}>
       {contacts
@@ -18,7 +22,7 @@ function ContactList({ contacts, filter, removeContact }) {
                 key={contact.id}
                 name={contact.name}
                 type="button"
-                onClick={() => removeContact(contact.id)}
+                onClick={() => dispath(removeContactAction(contact.id))}
               >
                 Delete
               </button>
@@ -29,27 +33,27 @@ function ContactList({ contacts, filter, removeContact }) {
   );
 }
 
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-};
+// ContactList.propTypes = {
+//   contacts: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       id: PropTypes.string.isRequired,
+//       name: PropTypes.string.isRequired,
+//       number: PropTypes.string.isRequired,
+//     })
+//   ),
+// };
 
-const mapStateProps = state => {
-  return {
-    filter: state.contacts.filter,
-    contacts: state.contacts.items,
-  };
-};
+// const mapStateProps = state => {
+//   return {
+//     filter: state.contacts.filter,
+//     contacts: state.contacts.items,
+//   };
+// };
 
-const mapDispathToProps = dispath => {
-  return {
-    removeContact: contactId => dispath(removeContactAction(contactId)),
-  };
-};
+// const mapDispathToProps = dispath => {
+//   return {
+//     removeContact: contactId => dispath(removeContactAction(contactId)),
+//   };
+// };
 
-export default connect(mapStateProps, mapDispathToProps)(ContactList);
+// export default connect(mapStateProps, mapDispathToProps)(ContactList);

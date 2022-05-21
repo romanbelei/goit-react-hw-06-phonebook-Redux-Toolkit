@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addContactAction } from '../../redus/actions';
 import styles from './ContactForm.module.css';
 
-function ContactForm({ onAddContact }) {
+export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const dispath = useDispatch();
 
   const reset = () => {
     setName('');
@@ -25,7 +26,8 @@ function ContactForm({ onAddContact }) {
 
   const handleOnSubmit = e => {
     e.preventDefault();
-    onAddContact(name, number);
+    dispath(addContactAction({ name: name, number: number }));
+    // onAddContact(name, number);
     reset();
   };
   return (
@@ -61,13 +63,14 @@ function ContactForm({ onAddContact }) {
   );
 }
 
-const mapStateProps = state => {
-  return {};
-};
+// const mapStateProps = state => {
+//   return {};
+// };
 
-const mapDispathToProps = dispath => {
-  return {
-    onAddContact: (name, number) => dispath(addContactAction(name, number)),
-  };
-};
-export default connect(mapStateProps, mapDispathToProps)(ContactForm);
+// const mapDispathToProps = dispath => {
+//   return {
+//     onAddContact: (name, number) =>
+//       dispath(addContactAction({ name: name, number: number })),
+//   };
+// };
+// export default connect(mapStateProps, mapDispathToProps)(ContactForm);
